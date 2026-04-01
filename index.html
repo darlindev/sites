@@ -960,70 +960,75 @@
 
         // Enviar pedido
         async function submitOrder(e) {
-            e.preventDefault();
-            
-            if (cart.length === 0) {
-                alert('Adicione itens ao pedido primeiro!');
-                return;
-            }
-            
-            const nome = document.getElementById('nome').value;
-            const rg = document.getElementById('rg').value;
-            const celular = document.getElementById('celular').value;
-            const discord = document.getElementById('discord').value;
-            const obs = document.getElementById('observacoes').value;
-            
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
-            const embed = {
-                title: "🎌 NOVA ENCOMENDA - TROPA DO JAPÃO",
-                color: 0xDC2626,
-                fields: [
-                    {
-                        name: "👤 Cliente",
-                        value: `Nome: ${nome}\nRG: ${rg}\nCelular: ${celular}\nDiscord: ${discord}`,
-                        inline: false
-                    },
-                    {
-                        name: "🤝 Parceria",
-                        value: isPartner ? "✅ ATIVA" : "❌ Não",
-                        inline: true
-                    },
-                    {
-                        name: "💰 Total",
-                        value: `R$ ${total.toLocaleString('pt-BR')}`,
-                        inline: true
-                    },
-                    {
-                        name: "🛒 Itens",
-                        value: cart.map(i => `• ${i.weapon}: ${i.quantity}x (R$ ${(i.price * i.quantity).toLocaleString('pt-BR')})`).join('\n'),
-                        inline: false
-                    }
-                ],
-                timestamp: new Date().toISOString()
-            };
-            
-            if (obs.trim()) {
-                embed.fields.push({
-                    name: "📝 Observações",
-                    value: obs,
-                    inline: false
-                });
-            }
-            
-            // 🚀 Enviar para o Discord
-await fetch(WEBHOOK_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ embeds: [embed] })
-});
+    e.preventDefault();
 
-alert('✅ Pedido enviado com sucesso!');
-cart = [];
-updateCart();
-document.getElementById('orderForm').reset();
+    if (cart.length === 0) {
+        alert('Adicione itens ao pedido primeiro!');
+        return;
+    }
 
-        }
+    const nome = document.getElementById('nome').value;
+    const rg = document.getElementById('rg').value;
+    const celular = document.getElementById('celular').value;
+    const discord = document.getElementById('discord').value;
+    const obs = document.getElementById('observacoes').value;
+
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    const embed = {
+        title: "💎 NOVA ENCOMENDA - TROPA DO JAPÃO",
+        color: 0xDC2626,
+        fields: [
+            {
+                name: "👤 Cliente",
+                value: `Nome: ${nome}\nRG: ${rg}\nCelular: ${celular}\nDiscord: ${discord}`,
+                inline: false
+            },
+            {
+                name: "🤝 Parceria",
+                value: isPartner ? "✅ ATIVA" : "❌ Não",
+                inline: true
+            },
+            {
+                name: "💰 Total",
+                value: `R$ ${total.toLocaleString('pt-BR')}`,
+                inline: true
+            },
+            {
+                name: "🛒 Itens",
+                value: cart.map(i => 
+                    `• ${i.weapon}: ${i.quantity}x (R$ ${(i.price * i.quantity).toLocaleString('pt-BR')})`
+                ).join('\n'),
+                inline: false
+            }
+        ],
+        timestamp: new Date().toISOString()
+    };
+
+    if (obs.trim()) {
+        embed.fields.push({
+            name: "📝 Observações",
+            value: obs,
+            inline: false
+        });
+    }
+
+    // 🚀 Enviar para o Discord e marcar o cargo
+    await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            content: "<@&1475240328180142342>", // marca o cargo
+            embeds: [embed]
+        })
+    });
+
+    alert('✅ Pedido enviado com sucesso!');
+    cart = [];
+    updateCart();
+    document.getElementById('orderForm').reset();
+}
+
     </script>
 
 </body>
