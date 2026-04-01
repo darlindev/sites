@@ -710,7 +710,7 @@
                     <div class="product-partner-price">R$ 7.500 com parceria</div>
                     <div class="quantity-selector">
                         <button class="quantity-btn" onclick="updateQuantity('sniper', -1)">−</button>
-                        <input type="number" class="quantity-input" id="sniper-qty" value="1" min="1" readonly>
+                        <input type="number" class="quantity-input" id="sniper-qty" value="1" min="1">
                         <button class="quantity-btn" onclick="updateQuantity('sniper', 1)">+</button>
                     </div>
                     <button class="add-to-cart" onclick="addToCart('sniper')">Adicionar</button>
@@ -729,7 +729,7 @@
                     <div class="product-partner-price">R$ 850 com parceria</div>
                     <div class="quantity-selector">
                         <button class="quantity-btn" onclick="updateQuantity('rifle', -1)">−</button>
-                        <input type="number" class="quantity-input" id="rifle-qty" value="1" min="1" readonly>
+                        <input type="number" class="quantity-input" id="sniper-qty" value="1" min="1">
                         <button class="quantity-btn" onclick="updateQuantity('rifle', 1)">+</button>
                     </div>
                     <button class="add-to-cart" onclick="addToCart('rifle')">Adicionar</button>
@@ -748,7 +748,7 @@
                     <div class="product-partner-price">R$ 1.000 com parceria</div>
                     <div class="quantity-selector">
                         <button class="quantity-btn" onclick="updateQuantity('shotgun', -1)">−</button>
-                        <input type="number" class="quantity-input" id="shotgun-qty" value="1" min="1" readonly>
+                        <input type="number" class="quantity-input" id="sniper-qty" value="1" min="1">
                         <button class="quantity-btn" onclick="updateQuantity('shotgun', 1)">+</button>
                     </div>
                     <button class="add-to-cart" onclick="addToCart('shotgun')">Adicionar</button>
@@ -767,7 +767,7 @@
                     <div class="product-partner-price">R$ 750 com parceria</div>
                     <div class="quantity-selector">
                         <button class="quantity-btn" onclick="updateQuantity('smg', -1)">−</button>
-                        <input type="number" class="quantity-input" id="smg-qty" value="1" min="1" readonly>
+                        <input type="number" class="quantity-input" id="sniper-qty" value="1" min="1">
                         <button class="quantity-btn" onclick="updateQuantity('smg', 1)">+</button>
                     </div>
                     <button class="add-to-cart" onclick="addToCart('smg')">Adicionar</button>
@@ -786,7 +786,7 @@
                     <div class="product-partner-price">R$ 700 com parceria</div>
                     <div class="quantity-selector">
                         <button class="quantity-btn" onclick="updateQuantity('pistol', -1)">−</button>
-                        <input type="number" class="quantity-input" id="pistol-qty" value="1" min="1" readonly>
+                        <input type="number" class="quantity-input" id="sniper-qty" value="1" min="1">
                         <button class="quantity-btn" onclick="updateQuantity('pistol', 1)">+</button>
                     </div>
                     <button class="add-to-cart" onclick="addToCart('pistol')">Adicionar</button>
@@ -943,6 +943,16 @@
             
             cartTotal.textContent = `R$ ${total.toLocaleString('pt-BR')}`;
         }
+ 
+        // Permitir digitar quantidade manualmente
+document.querySelectorAll('.quantity-input').forEach(input => {
+    input.addEventListener('input', () => {
+        let value = parseInt(input.value);
+        if (isNaN(value) || value < 1) {
+            input.value = 1; // garante mínimo de 1
+        }
+    });
+});
 
         // Remover item
         function removeItem(index) {
