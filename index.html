@@ -1011,12 +1011,18 @@
                 });
             }
             
-            console.log('Pedido:', embed);
-            alert('✅ Pedido enviado com sucesso!');
-            
-            cart = [];
-            updateCart();
-            document.getElementById('orderForm').reset();
+            // 🚀 Enviar para o Discord
+await fetch(WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ embeds: [embed] })
+});
+
+alert('✅ Pedido enviado com sucesso!');
+cart = [];
+updateCart();
+document.getElementById('orderForm').reset();
+
         }
     </script>
 
